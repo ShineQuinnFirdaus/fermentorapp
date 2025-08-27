@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'welcome_screen.dart';
-import 'login_screen.dart'; // 🔹 tambahkan import
+import 'login_screen.dart'; // 🔹 pastikan import LoginScreen
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -185,7 +185,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             padding: const EdgeInsets.symmetric(vertical: 14),
                           ),
                           onPressed: () {
-                            // TODO: simpan data user ke backend
+                            // Snackbar konfirmasi
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Pendaftaran berhasil!"),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+
+                            // Navigasi ke LoginScreen setelah delay sebentar
+                            Future.delayed(const Duration(milliseconds: 500), () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const LoginScreen(),
+                                ),
+                              );
+                            });
                           },
                           child: const Text(
                             "Daftar",

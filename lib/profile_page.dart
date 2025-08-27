@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'welcome_screen.dart';
 import 'profile_detail_page.dart';
+import 'change_password_page.dart';
+import 'faq_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -85,25 +87,44 @@ class ProfilePage extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16)),
                             ),
-                          TextButton(
+                            TextButton(
                               onPressed: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (_) => const ProfileDetailPage()),
+                                  MaterialPageRoute(
+                                      builder: (_) => const ProfileDetailPage()),
                                 );
                               },
                               child: const Text("Lihat Profil"),
                             ),
-
-                          
                           ],
                         ),
                       ),
                       const SizedBox(height: 24),
 
                       // Menu
-                      _buildMenuItem(Icons.key, "Ganti Kata Sandi", () {}),
-                      _buildMenuItem(Icons.help, "Tentang Aplikasi (FAQ)", () {}),
+                      _buildMenuItem(
+                        Icons.key,
+                        "Ganti Kata Sandi",
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const ChangePasswordPage()),
+                          );
+                        },
+                      ),
+                      _buildMenuItem(
+                        Icons.help,
+                        "Tentang Aplikasi (FAQ)",
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const FaqPage()),
+                          );
+                        },
+                      ),
                       _buildMenuItem(Icons.logout, "Keluar", () {
                         _showLogoutDialog(context);
                       }),
@@ -122,8 +143,8 @@ class ProfilePage extends StatelessWidget {
     return ListTile(
       leading: Icon(icon, color: Colors.black54),
       title: Text(text, style: const TextStyle(fontSize: 14)),
-      trailing: const Icon(Icons.arrow_forward_ios,
-          size: 16, color: Colors.black54), // 🔹 ganti abu-abu
+      trailing:
+          const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black54),
       onTap: onTap,
     );
   }
@@ -140,8 +161,7 @@ class ProfilePage extends StatelessWidget {
             child: const Text("Batal"),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0D47A1)),
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0D47A1)),
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                 context,

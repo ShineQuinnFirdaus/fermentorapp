@@ -14,25 +14,23 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFF0D47A1),
-      body: SafeArea(
-        child: Column(
-          children: [
-            const CustomHeader(
-              initials: "RP",
-              name: "Rendha Puspita",
-            ),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(32),
-                    topRight: Radius.circular(32),
-                  ),
+      body: Column(
+        children: [
+          const CustomHeader(initials: "RP", name: "Rendha Puspita"),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(20, 40, 20, 20), // top padding seperti TanggalDetailPage
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(32),
+                  topRight: Radius.circular(32),
                 ),
+              ),
+              child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       "Monitoring Parameter",
@@ -44,61 +42,56 @@ class HomePage extends StatelessWidget {
                     const SizedBox(height: 12),
                     const Text(
                       "Pada Proses Fermentasi Beras Ketan Putih",
-                      style: TextStyle(fontSize: 16, color: Colors.black54),
-                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black54,
+                      ),
                     ),
-                    const SizedBox(height: 28),
+                    const SizedBox(height: 30), // jarak sebelum list parameter
 
                     // List parameter
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        children: [
-                          _buildParameterCard(
-                            context,
-                            "70–85%",
-                            "Kelembapan",
-                            Icons.water_drop,
-                            accentYellow,
-                            const KelembapanScreen(),
-                          ),
-                          const SizedBox(height: 16),
-                          _buildParameterCard(
-                            context,
-                            "5.5",
-                            "Kadar PH",
-                            Icons.science,
-                            accentYellow,
-                            const PhScreen(),
-                          ),
-                          const SizedBox(height: 16),
-                          _buildParameterCard(
-                            context,
-                            "2.5%",
-                            "Kadar Alkohol",
-                            Icons.local_drink,
-                            accentYellow,
-                            const AlkoholScreen(),
-                          ),
-                          const SizedBox(height: 16),
-                          _buildParameterCard(
-                            context,
-                            "30°C",
-                            "Temperatur",
-                            Icons.thermostat,
-                            accentYellow,
-                            const TemperaturScreen(),
-                          ),
-                          const SizedBox(height: 24),
-                        ],
-                      ),
-                    )
+                    _buildParameterCard(
+                      context,
+                      "70–85%",
+                      "Kelembapan",
+                      Icons.water_drop,
+                      accentYellow,
+                      const KelembapanScreen(),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildParameterCard(
+                      context,
+                      "5.5",
+                      "Kadar PH",
+                      Icons.science,
+                      accentYellow,
+                      const PhScreen(),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildParameterCard(
+                      context,
+                      "2.5%",
+                      "Kadar Alkohol",
+                      Icons.local_drink,
+                      accentYellow,
+                      const AlkoholScreen(),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildParameterCard(
+                      context,
+                      "30°C",
+                      "Temperatur",
+                      Icons.thermostat,
+                      accentYellow,
+                      const TemperaturScreen(),
+                    ),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -150,7 +143,11 @@ class HomePage extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            const Icon(Icons.arrow_forward_ios, size: 18, color: Colors.black54),
+            const Icon(
+              Icons.arrow_forward_ios,
+              size: 18,
+              color: Colors.black54,
+            ),
           ],
         ),
       ),
