@@ -194,14 +194,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
 
                             // Navigasi ke LoginScreen setelah delay sebentar
-                            Future.delayed(const Duration(milliseconds: 500), () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const LoginScreen(),
-                                ),
-                              );
-                            });
+                            Future.delayed(
+                              const Duration(milliseconds: 500),
+                              () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const LoginScreen(),
+                                  ),
+                                );
+                              },
+                            );
                           },
                           child: const Text(
                             "Daftar",

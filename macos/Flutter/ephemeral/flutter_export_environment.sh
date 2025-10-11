@@ -1,6 +1,6 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=D:\FlutterDev\flutter"
+export "FLUTTER_ROOT=C:\Users\HuAwEi\flutter"
 export "FLUTTER_APPLICATION_PATH=C:\Users\HuAwEi\Fermentor Brem\fermentorapp"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
