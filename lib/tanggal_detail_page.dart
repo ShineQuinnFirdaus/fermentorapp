@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'custom_header.dart';
 
 class TanggalDetailPage extends StatefulWidget {
@@ -15,19 +16,19 @@ class _TanggalDetailPageState extends State<TanggalDetailPage> {
   DateTime? _selectedDate;
   int _tapCount = 0;
 
-  List<String> months = const [
-    "Januari",
-    "Februari",
-    "Maret",
-    "April",
-    "Mei",
-    "Juni",
-    "Juli",
-    "Agustus",
-    "September",
-    "Oktober",
-    "November",
-    "Desember",
+  List<String> months = [
+    tr("month_january"),
+    tr("month_february"),
+    tr("month_march"),
+    tr("month_april"),
+    tr("month_may"),
+    tr("month_june"),
+    tr("month_july"),
+    tr("month_august"),
+    tr("month_september"),
+    tr("month_october"),
+    tr("month_november"),
+    tr("month_december"),
   ];
 
   List<int> years = [2025, 2026, 2027, 2028, 2029];
@@ -37,17 +38,10 @@ class _TanggalDetailPageState extends State<TanggalDetailPage> {
     return DateTime(year, month + 1, 0).day;
   }
 
-  DateTime _firstDayOfMonth(DateTime month) {
-    return DateTime(month.year, month.month, 1);
-  }
+  DateTime _firstDayOfMonth(DateTime month) => DateTime(month.year, month.month, 1);
 
-  DateTime _lastDayOfMonth(DateTime month) {
-    return DateTime(
-      month.year,
-      month.month,
-      _daysInMonth(month.year, month.month),
-    );
-  }
+  DateTime _lastDayOfMonth(DateTime month) =>
+      DateTime(month.year, month.month, _daysInMonth(month.year, month.month));
 
   bool _isInSelectedRange(DateTime date) {
     if (_selectedDate == null) return false;
@@ -55,6 +49,15 @@ class _TanggalDetailPageState extends State<TanggalDetailPage> {
     DateTime end = start.add(const Duration(days: 6));
     return date.isAfter(start.subtract(const Duration(days: 1))) &&
         date.isBefore(end.add(const Duration(days: 1)));
+  }
+
+  void _toggleLanguage() {
+    if (context.locale.languageCode == "id") {
+      context.setLocale(const Locale("en"));
+    } else {
+      context.setLocale(const Locale("id"));
+    }
+    setState(() {});
   }
 
   @override
@@ -73,16 +76,18 @@ class _TanggalDetailPageState extends State<TanggalDetailPage> {
     );
 
     List<DateTime> calendarDays = [];
-    for (
-      DateTime d = gridStart;
-      d.isBefore(gridEnd);
-      d = d.add(const Duration(days: 1))
-    ) {
+    for (DateTime d = gridStart; d.isBefore(gridEnd); d = d.add(const Duration(days: 1))) {
       calendarDays.add(d);
     }
 
     return Scaffold(
       backgroundColor: primaryBlue,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: primaryBlue,
+        shape: const CircleBorder(),
+        onPressed: _toggleLanguage,
+        child: const Icon(Icons.public, color: Colors.white, size: 28),
+      ),
       body: Column(
         children: [
           const CustomHeader(initials: "RP", name: "Rendha Puspita"),
@@ -100,22 +105,28 @@ class _TanggalDetailPageState extends State<TanggalDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Cek Siklus !",
-                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                  // Judul
+                  Text(
+                    tr("tanggal_title"),
+                    style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    "Pilih tanggal untuk melihat siklus",
-                    style: TextStyle(fontSize: 16, color: Colors.black54),
+
+                  // Subjudul
+                  Text(
+                    tr("tanggal_subtitle"),
+                    style: const TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   const SizedBox(height: 30),
 
+                  // Row button + dropdown
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // TODO: Implement date range selection
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.amber,
                           foregroundColor: Colors.black,
@@ -123,7 +134,7 @@ class _TanggalDetailPageState extends State<TanggalDetailPage> {
                             borderRadius: BorderRadius.circular(16),
                           ),
                         ),
-                        child: const Text("Pilih Jarak Tanggal"),
+                        child: Text(tr("tanggal_btn_select_range")),
                       ),
                       Row(
                         children: [
@@ -138,10 +149,7 @@ class _TanggalDetailPageState extends State<TanggalDetailPage> {
                             ),
                             onChanged: (val) {
                               setState(() {
-                                _focusedMonth = DateTime(
-                                  _focusedMonth.year,
-                                  val!,
-                                );
+                                _focusedMonth = DateTime(_focusedMonth.year, val!);
                                 _selectedDate = null;
                               });
                             },
@@ -159,10 +167,7 @@ class _TanggalDetailPageState extends State<TanggalDetailPage> {
                                 .toList(),
                             onChanged: (val) {
                               setState(() {
-                                _focusedMonth = DateTime(
-                                  val!,
-                                  _focusedMonth.month,
-                                );
+                                _focusedMonth = DateTime(val!, _focusedMonth.month);
                                 _selectedDate = null;
                               });
                             },
@@ -186,24 +191,23 @@ class _TanggalDetailPageState extends State<TanggalDetailPage> {
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: const [
-                        Text("SEN"),
-                        Text("SEL"),
-                        Text("RAB"),
-                        Text("KAM"),
-                        Text("JUM"),
-                        Text("SAB"),
-                        Text("MIN"),
+                      children: [
+                        Text(tr("weekday_mon")),
+                        Text(tr("weekday_tue")),
+                        Text(tr("weekday_wed")),
+                        Text(tr("weekday_thu")),
+                        Text(tr("weekday_fri")),
+                        Text(tr("weekday_sat")),
+                        Text(tr("weekday_sun")),
                       ],
                     ),
                   ),
 
-                  // Kalender grid yang rapat penuh
+                  // Kalender grid
                   Expanded(
                     child: LayoutBuilder(
                       builder: (context, constraints) {
-                        double rowHeight =
-                            constraints.maxHeight / 6; // max 6 minggu
+                        double rowHeight = constraints.maxHeight / 6;
                         return Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
@@ -215,19 +219,16 @@ class _TanggalDetailPageState extends State<TanggalDetailPage> {
                           ),
                           child: GridView.builder(
                             physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 7,
-                                  crossAxisSpacing: 6,
-                                  mainAxisSpacing: 6,
-                                  childAspectRatio:
-                                      constraints.maxWidth / (7 * rowHeight),
-                                ),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 7,
+                              crossAxisSpacing: 6,
+                              mainAxisSpacing: 6,
+                              childAspectRatio: constraints.maxWidth / (7 * rowHeight),
+                            ),
                             itemCount: calendarDays.length,
                             itemBuilder: (context, index) {
                               DateTime day = calendarDays[index];
-                              bool isCurrentMonth =
-                                  day.month == _focusedMonth.month;
+                              bool isCurrentMonth = day.month == _focusedMonth.month;
                               bool isSelected = _isInSelectedRange(day);
 
                               return GestureDetector(
@@ -239,18 +240,12 @@ class _TanggalDetailPageState extends State<TanggalDetailPage> {
                                 },
                                 child: AnimatedSwitcher(
                                   duration: const Duration(milliseconds: 350),
-                                  transitionBuilder: (child, anim) =>
-                                      ScaleTransition(
-                                        scale: anim,
-                                        child: FadeTransition(
-                                          opacity: anim,
-                                          child: child,
-                                        ),
-                                      ),
+                                  transitionBuilder: (child, anim) => ScaleTransition(
+                                    scale: anim,
+                                    child: FadeTransition(opacity: anim, child: child),
+                                  ),
                                   child: Container(
-                                    key: ValueKey(
-                                      "${day.toIso8601String()}-$_tapCount",
-                                    ),
+                                    key: ValueKey("${day.toIso8601String()}-$_tapCount"),
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       color: isSelected
@@ -267,9 +262,7 @@ class _TanggalDetailPageState extends State<TanggalDetailPage> {
                                             : FontWeight.normal,
                                         color: isSelected
                                             ? primaryBlue
-                                            : (isCurrentMonth
-                                                  ? Colors.black
-                                                  : Colors.grey),
+                                            : (isCurrentMonth ? Colors.black : Colors.grey),
                                       ),
                                     ),
                                   ),

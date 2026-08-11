@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
@@ -14,6 +15,21 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryBlue,
+
+      // 🌍 Tombol translate bulat
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: primaryBlue,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.translate, color: Colors.white),
+        onPressed: () {
+          if (context.locale.languageCode == "id") {
+            context.setLocale(const Locale("en"));
+          } else {
+            context.setLocale(const Locale("id"));
+          }
+        },
+      ),
+
       appBar: AppBar(
         backgroundColor: primaryBlue,
         elevation: 0,
@@ -21,9 +37,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           icon: const Icon(Icons.arrow_back, color: Colors.amber),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "Ubah Kata Sandi",
-          style: TextStyle(
+        title: Text(
+          tr("change_password_title"),
+          style: const TextStyle(
             color: Colors.amber,
             fontWeight: FontWeight.bold,
           ),
@@ -44,25 +60,25 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             // Form Password
             TextField(
               obscureText: true,
-              decoration: const InputDecoration(
-                labelText: "Kata Sandi Lama",
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: tr("old_password"),
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               obscureText: true,
-              decoration: const InputDecoration(
-                labelText: "Kata Sandi Baru",
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: tr("new_password"),
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               obscureText: true,
-              decoration: const InputDecoration(
-                labelText: "Konfirmasi Kata Sandi Baru",
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: tr("confirm_new_password"),
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 24),
@@ -71,18 +87,18 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryBlue, // Latar biru
+                  backgroundColor: primaryBlue,
                 ),
                 onPressed: () {
                   // TODO: Implement change password logic
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text("Kata sandi berhasil diganti!")),
+                    SnackBar(
+                        content: Text(tr("change_password_success"))),
                   );
                 },
-                child: const Text(
-                  "Simpan",
-                  style: TextStyle(color: Colors.white), // Teks putih
+                child: Text(
+                  tr("save"),
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
             ),

@@ -20,6 +20,11 @@ dependencies:
   path_provider: ^2.1.2
   open_file: ^3.3.2
 
+  # Localization
+  easy_localization: ^3.0.4
+  flutter_localizations:
+    sdk: flutter
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -29,9 +34,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-flutter_localizations:
-  sdk: flutter
-  intl: ^0.19.0
+  # ASSETS (LETakkan DI SINI, BUKAN DI TEMPAT LAIN)
+  assets:
+    - assets/translations/
 
   # Contoh untuk menambahkan font (jika nanti ada)
   # fonts:

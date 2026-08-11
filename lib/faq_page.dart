@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class FaqPage extends StatefulWidget {
   const FaqPage({super.key});
@@ -10,13 +11,29 @@ class FaqPage extends StatefulWidget {
 class _FaqPageState extends State<FaqPage> {
   final Color primaryBlue = const Color(0xFF0D47A1);
 
-  String selectedTab = "FAQ";
-  String selectedCategory = "Umum";
+  String selectedTab = "faq";
+  String selectedCategory = "general";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryBlue,
+
+      // 🌍 Tombol translate bulat
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: primaryBlue,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.translate, color: Colors.white),
+        onPressed: () {
+          if (context.locale.languageCode == "id") {
+            context.setLocale(const Locale("en"));
+          } else {
+            context.setLocale(const Locale("id"));
+          }
+          setState(() {});
+        },
+      ),
+
       appBar: AppBar(
         backgroundColor: primaryBlue,
         elevation: 0,
@@ -24,14 +41,14 @@ class _FaqPageState extends State<FaqPage> {
           icon: const Icon(Icons.arrow_back, color: Color(0xFFFFC107)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "Tentang Aplikasi (FAQ)",
-          style: TextStyle(
+        title: Text(
+          tr("faq_title"),
+          style: const TextStyle(
             color: Color(0xFFFFC107),
             fontWeight: FontWeight.bold,
           ),
         ),
-        centerTitle: true, // 🔹 Judul ditengah
+        centerTitle: true,
       ),
       body: Container(
         padding: const EdgeInsets.all(20),
@@ -46,8 +63,8 @@ class _FaqPageState extends State<FaqPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildTab("FAQ"),
-                _buildTab("Hubungi Kami"),
+                _buildTab("faq", tr("faq_tab_faq")),
+                _buildTab("contact", tr("faq_tab_contact")),
               ],
             ),
             const SizedBox(height: 20),
@@ -56,9 +73,9 @@ class _FaqPageState extends State<FaqPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildCategory("Umum"),
-                _buildCategory("Tentang Akun"),
-                _buildCategory("Servis"),
+                _buildCategory("general", tr("faq_category_general")),
+                _buildCategory("account", tr("faq_category_account")),
+                _buildCategory("service", tr("faq_category_service")),
               ],
             ),
             const SizedBox(height: 20),
@@ -66,7 +83,7 @@ class _FaqPageState extends State<FaqPage> {
             // Search Bar
             TextField(
               decoration: InputDecoration(
-                hintText: "Cari",
+                hintText: tr("faq_search_hint"),
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -81,10 +98,9 @@ class _FaqPageState extends State<FaqPage> {
                 itemCount: 6,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: const Text("Lorem ipsum dolor sit amet?"),
+                    title: Text(tr("faq_item_title", args: ["${index + 1}"])),
                     subtitle: index == 0
-                        ? const Text(
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit...")
+                        ? Text(tr("faq_item_subtitle", args: ["${index + 1}"]))
                         : null,
                     trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   );
@@ -97,37 +113,41 @@ class _FaqPageState extends State<FaqPage> {
     );
   }
 
-  Widget _buildTab(String label) {
-    bool isSelected = selectedTab == label;
+  Widget _buildTab(String key, String label) {
+    bool isSelected = selectedTab == key;
     return Expanded(
       child: GestureDetector(
-        onTap: () => setState(() => selectedTab = label),
+        onTap: () => setState(() => selectedTab = key),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          height: 40, // tinggi tetap
+          alignment: Alignment.center,
+          margin: const EdgeInsets.symmetric(horizontal: 4), // jarak antar tab
           decoration: BoxDecoration(
             color: isSelected ? Colors.amber : Colors.white,
             borderRadius: BorderRadius.circular(15),
             border: Border.all(color: Colors.black26),
           ),
-          alignment: Alignment.center,
           child: Text(
             label,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: isSelected ? Colors.black : Colors.grey[700],
             ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildCategory(String label) {
-    bool isSelected = selectedCategory == label;
+  Widget _buildCategory(String key, String label) {
+    bool isSelected = selectedCategory == key;
     return GestureDetector(
-      onTap: () => setState(() => selectedCategory = label),
+      onTap: () => setState(() => selectedCategory = key),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+        width: 100, // lebar tetap semua kategori sama
+        height: 36, // tinggi tetap
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           color: isSelected ? Colors.amber : Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -139,6 +159,8 @@ class _FaqPageState extends State<FaqPage> {
             fontWeight: FontWeight.bold,
             color: isSelected ? Colors.black : Colors.grey[700],
           ),
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis, // teks panjang tetap rapi
         ),
       ),
     );

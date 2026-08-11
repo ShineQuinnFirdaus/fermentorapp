@@ -1,26 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'kelembapan_screen.dart';
 import 'ph_screen.dart';
 import 'alkohol_screen.dart';
 import 'temperatur_screen.dart';
 import 'custom_header.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  void _toggleLanguage() {
+    if (context.locale.languageCode == "id") {
+      context.setLocale(const Locale("en"));
+    } else {
+      context.setLocale(const Locale("id"));
+    }
+    setState(() {}); // rebuild agar teks update
+  }
 
   @override
   Widget build(BuildContext context) {
     const Color accentYellow = Color(0xFFFFC107);
+    const Color primaryBlue = Color(0xFF0D47A1);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0D47A1),
+      backgroundColor: primaryBlue,
+
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: primaryBlue,
+        shape: const CircleBorder(),
+        onPressed: _toggleLanguage,
+        child: const Icon(Icons.public, color: Colors.white, size: 28),
+      ),
+
       body: Column(
         children: [
           const CustomHeader(initials: "RP", name: "Rendha Puspita"),
           Expanded(
             child: Container(
               width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(20, 40, 20, 20), // top padding seperti TanggalDetailPage
+              padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -29,31 +53,35 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Monitoring Parameter",
-                      style: TextStyle(
+                    // Judul
+                    Text(
+                      tr("home_title_monitoring"),
+                      style: const TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 12),
-                    const Text(
-                      "Pada Proses Fermentasi Beras Ketan Putih",
-                      style: TextStyle(
+
+                    // Subjudul
+                    Text(
+                      tr("home_subtitle"),
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Colors.black54,
                       ),
                     ),
-                    const SizedBox(height: 30), // jarak sebelum list parameter
+                    const SizedBox(height: 30),
 
-                    // List parameter
+                    // Parameter Cards
                     _buildParameterCard(
                       context,
                       "70–85%",
-                      "Kelembapan",
+                      "param_humidity",
                       Icons.water_drop,
                       accentYellow,
                       const KelembapanScreen(),
@@ -62,7 +90,7 @@ class HomePage extends StatelessWidget {
                     _buildParameterCard(
                       context,
                       "5.5",
-                      "Kadar PH",
+                      "param_ph",
                       Icons.science,
                       accentYellow,
                       const PhScreen(),
@@ -71,7 +99,7 @@ class HomePage extends StatelessWidget {
                     _buildParameterCard(
                       context,
                       "2.5%",
-                      "Kadar Alkohol",
+                      "param_alcohol",
                       Icons.local_drink,
                       accentYellow,
                       const AlkoholScreen(),
@@ -80,7 +108,7 @@ class HomePage extends StatelessWidget {
                     _buildParameterCard(
                       context,
                       "30°C",
-                      "Temperatur",
+                      "param_temperature",
                       Icons.thermostat,
                       accentYellow,
                       const TemperaturScreen(),
@@ -99,7 +127,7 @@ class HomePage extends StatelessWidget {
   Widget _buildParameterCard(
     BuildContext context,
     String value,
-    String title,
+    String titleKey, // ini key JSON, bukan teks literal
     IconData icon,
     Color color,
     Widget nextPage,
@@ -139,7 +167,10 @@ class HomePage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(title, style: const TextStyle(color: Colors.black54)),
+                Text(
+                  tr(titleKey), // pastikan key JSON dipanggil tr() di sini
+                  style: const TextStyle(color: Colors.black54),
+                ),
               ],
             ),
             const Spacer(),

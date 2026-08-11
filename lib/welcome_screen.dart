@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'login_screen.dart';
 import 'signup_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
+
+  void _toggleLanguage(BuildContext context) {
+    if (context.locale.languageCode == "id") {
+      context.setLocale(const Locale("en"));
+    } else {
+      context.setLocale(const Locale("id"));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,66 +21,104 @@ class WelcomeScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
+
+      // 🌍 Floating Globe Button
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: primaryBlue,
+        shape: const CircleBorder(),
+        child: const Icon(
+          Icons.public,
+          color: Colors.white,
+          size: 28,
+        ),
+        onPressed: () => _toggleLanguage(context),
+      ),
+
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // 🔹 Logo
+              // Logo
               Image.asset(
                 "assets/images/logo_fermentasi.png",
                 height: 140,
               ),
               const SizedBox(height: 32),
 
-              // 🔹 Text
-              const Text(
-                "Selamat Datang !",
-                style: TextStyle(
+              // Judul
+              Text(
+                tr("welcome_title"),
+                style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32.0),
+
+              // Subtitle
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: Text(
-                  "Untuk membantu mengukur empat parameter utama dalam proses fermentasi beras ketan putih pada produksi brem di mitra industri.",
+                  tr("welcome_subtitle"),
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, color: Colors.black54),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black54,
+                  ),
                 ),
               ),
               const SizedBox(height: 40),
 
-              // 🔹 Tombol Masuk
+              // 🔵 Tombol MASUK — ukuran seragam
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryBlue,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 14),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  fixedSize: const Size(220, 48), // ⭐ ukuran tombol sama
                 ),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  );
                 },
-                child: const Text("Masuk", style: TextStyle(color: Colors.white, fontSize: 16)),
+                child: Text(
+                  tr("welcome_btn_login"),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
               ),
               const SizedBox(height: 12),
 
-              // 🔹 Tombol Daftar
+              // 🟡 Tombol DAFTAR — ukuran seragam
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: accentYellow,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 14),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  fixedSize: const Size(220, 48), // ⭐ ukuran tombol sama
                 ),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => const SignUpScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SignUpScreen()),
+                  );
                 },
-                child: const Text("Daftar", style: TextStyle(color: Colors.white, fontSize: 16)),
+                child: Text(
+                  tr("welcome_btn_signup"),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ],
           ),

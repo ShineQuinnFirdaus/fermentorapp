@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'welcome_screen.dart';
 import 'profile_detail_page.dart';
 import 'change_password_page.dart';
@@ -11,8 +12,22 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     const Color primaryBlue = Color(0xFF0D47A1);
 
+    void toggleLanguage() {
+      if (context.locale.languageCode == "id") {
+        context.setLocale(const Locale("en"));
+      } else {
+        context.setLocale(const Locale("id"));
+      }
+    }
+
     return Scaffold(
       backgroundColor: primaryBlue,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: primaryBlue,
+        shape: const CircleBorder(),
+        onPressed: toggleLanguage,
+        child: const Icon(Icons.public, color: Colors.white, size: 28),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -92,10 +107,11 @@ class ProfilePage extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (_) => const ProfileDetailPage()),
+                                      builder: (_) =>
+                                          const ProfileDetailPage()),
                                 );
                               },
-                              child: const Text("Lihat Profil"),
+                              child: Text(tr("profile_view_profile")),
                             ),
                           ],
                         ),
@@ -104,8 +120,9 @@ class ProfilePage extends StatelessWidget {
 
                       // Menu
                       _buildMenuItem(
+                        context,
                         Icons.key,
-                        "Ganti Kata Sandi",
+                        tr("profile_change_password"),
                         () {
                           Navigator.push(
                             context,
@@ -115,8 +132,9 @@ class ProfilePage extends StatelessWidget {
                         },
                       ),
                       _buildMenuItem(
+                        context,
                         Icons.help,
-                        "Tentang Aplikasi (FAQ)",
+                        tr("profile_faq"),
                         () {
                           Navigator.push(
                             context,
@@ -125,9 +143,14 @@ class ProfilePage extends StatelessWidget {
                           );
                         },
                       ),
-                      _buildMenuItem(Icons.logout, "Keluar", () {
-                        _showLogoutDialog(context);
-                      }),
+                      _buildMenuItem(
+                        context,
+                        Icons.logout,
+                        tr("profile_logout"),
+                        () {
+                          _showLogoutDialog(context);
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -139,7 +162,8 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuItem(IconData icon, String text, VoidCallback onTap) {
+  Widget _buildMenuItem(
+      BuildContext context, IconData icon, String text, VoidCallback onTap) {
     return ListTile(
       leading: Icon(icon, color: Colors.black54),
       title: Text(text, style: const TextStyle(fontSize: 14)),
@@ -154,14 +178,15 @@ class ProfilePage extends StatelessWidget {
       context: context,
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        content: const Text("Anda yakin ingin keluar ?"),
+        content: Text(tr("profile_logout_confirm")),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Batal"),
+            child: Text(tr("profile_logout_no")),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0D47A1)),
+            style:
+                ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0D47A1)),
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                 context,
@@ -169,7 +194,8 @@ class ProfilePage extends StatelessWidget {
                 (route) => false,
               );
             },
-            child: const Text("Keluar", style: TextStyle(color: Colors.white)),
+            child: Text(tr("profile_logout_yes"),
+                style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),
